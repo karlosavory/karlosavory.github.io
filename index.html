@@ -8,229 +8,640 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            background-color: #0B1120; /* Deep Navy Blue */
+        *, *::before, *::after { box-sizing: border-box; }
+
+        :root {
+            --navy: #0B1120;
+            --blue-accent: #3B82F6;
+            --blue-glow: rgba(59, 130, 246, 0.4);
+            --glass-bg: rgba(30, 41, 59, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.06);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--navy);
             color: #f8fafc;
+            overflow-x: hidden;
         }
-        /* Premium Glass Card Effect */
-        .glass-card { 
-            background: rgba(30, 41, 59, 0.6); 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05); 
+
+        /* ── Background grid ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
         }
-        /* Subtle glow for the brands */
-        .brand-glow:hover {
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+
+        /* ── Ambient glow orbs ── */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .orb-1 {
+            width: 600px; height: 600px;
+            background: rgba(37,99,235,0.12);
+            top: -200px; left: -200px;
+        }
+        .orb-2 {
+            width: 500px; height: 500px;
+            background: rgba(6,182,212,0.07);
+            bottom: 10%; right: -150px;
+        }
+
+        /* ── Glass card ── */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+        }
+
+        /* ── Fade-in on scroll ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.65s cubic-bezier(.22,1,.36,1), transform 0.65s cubic-bezier(.22,1,.36,1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* ── Hero text gradient ── */
+        .gradient-text {
+            background: linear-gradient(135deg, #60A5FA 0%, #22D3EE 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ── Stat counter card ── */
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        /* ── Brand card hover ── */
+        .brand-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .brand-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 28px rgba(59,130,246,0.2);
+            border-color: rgba(59,130,246,0.4);
+        }
+
+        /* ── Nav link ── */
+        .nav-link {
+            position: relative;
+            padding-bottom: 2px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 1px;
+            background: var(--blue-accent);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+
+        /* ── Section number badge ── */
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--blue-accent);
+            margin-bottom: 0.5rem;
+        }
+        .section-badge::before {
+            content: '';
+            display: block;
+            width: 20px; height: 1px;
+            background: var(--blue-accent);
+        }
+
+        /* ── Toolkit pill ── */
+        .toolkit-pill {
+            background: rgba(30,41,59,0.7);
+            border: 1px solid rgba(255,255,255,0.07);
+            color: #94a3b8;
+            transition: border-color 0.25s, color 0.25s, transform 0.25s;
+        }
+        .toolkit-pill:hover {
+            border-color: rgba(59,130,246,0.5);
+            color: #bae6fd;
             transform: translateY(-2px);
+        }
+
+        /* ── Strategy card top accent ── */
+        .strategy-card-featured {
+            border-top: 2px solid var(--blue-accent);
+            transform: translateY(-8px);
+        }
+
+        /* ── Divider ── */
+        .section-divider {
+            width: 48px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--blue-accent), transparent);
+            margin: 1rem 0 2rem;
+        }
+
+        /* ── Button glow ── */
+        .btn-primary {
+            background: #2563eb;
+            color: #fff;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.25s, box-shadow 0.25s, transform 0.2s;
+            box-shadow: 0 0 18px rgba(37,99,235,0.45);
+            display: inline-block;
+        }
+        .btn-primary:hover {
+            background: #3b82f6;
+            box-shadow: 0 0 30px rgba(59,130,246,0.6);
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            border: 1px solid rgba(100,116,139,0.6);
+            color: #94a3b8;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: border-color 0.25s, color 0.25s, transform 0.2s;
+            display: inline-block;
+        }
+        .btn-secondary:hover {
+            border-color: #3b82f6;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* ── TikTok embed wrapper ── */
+        .tiktok-frame {
+            position: relative;
+            background: #0f172a;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.07);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .tiktok-frame:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+        }
+
+        /* ── Chart bars animation ── */
+        @keyframes growUp {
+            from { transform: scaleY(0); }
+            to   { transform: scaleY(1); }
+        }
+        .bar { transform-origin: bottom; animation: growUp 0.8s cubic-bezier(.22,1,.36,1) both; }
+        .bar-1 { animation-delay: 0.1s; }
+        .bar-2 { animation-delay: 0.2s; }
+        .bar-3 { animation-delay: 0.3s; }
+        .bar-4 { animation-delay: 0.4s; }
+        .bar-5 { animation-delay: 0.5s; }
+
+        /* ── Pulse dot ── */
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.5; transform: scale(1.4); }
+        }
+        .pulse-dot { animation: pulse-dot 1.8s ease-in-out infinite; }
+
+        /* ── Mobile nav ── */
+        @media (max-width: 640px) {
+            .hero-headline { font-size: 2.8rem; line-height: 1.15; }
         }
     </style>
 </head>
 <body class="antialiased selection:bg-blue-500 selection:text-white">
 
-    <nav class="max-w-6xl mx-auto px-6 py-8 flex justify-between items-center">
-        <div class="text-2xl font-bold text-white tracking-widest">AVORY<span class="text-blue-500">.</span></div>
-        <div class="flex gap-4 md:gap-6 items-center">
-            
-            <a href="https://www.youtube.com/@avorygaming" target="_blank" rel="noopener noreferrer" class="flex items-center text-sm font-semibold text-slate-300 hover:text-white transition duration-300">
-                <svg class="w-5 h-5 mr-1.5 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+    <!-- Ambient orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <!-- ────────────────── NAV ────────────────── -->
+    <nav class="relative z-50 max-w-6xl mx-auto px-6 py-7 flex justify-between items-center">
+        <div class="text-xl font-bold text-white tracking-widest">AVORY<span class="text-blue-500">.</span></div>
+        <div class="flex gap-5 md:gap-7 items-center">
+
+            <a href="https://www.youtube.com/@avorygaming" target="_blank" rel="noopener noreferrer"
+               class="nav-link flex items-center gap-1.5 text-sm font-medium text-slate-400 hover:text-white transition-colors duration-200">
+                <svg class="w-4 h-4 text-red-500 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
                 <span class="hidden sm:inline">YouTube</span>
             </a>
 
-            <a href="https://www.tiktok.com/@avorygaming" target="_blank" rel="noopener noreferrer" class="flex items-center text-sm font-semibold text-slate-300 hover:text-white transition duration-300">
-                <svg class="w-5 h-5 mr-1.5 text-slate-300 hover:text-white transition duration-300" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+            <a href="https://www.tiktok.com/@avorygaming" target="_blank" rel="noopener noreferrer"
+               class="nav-link flex items-center gap-1.5 text-sm font-medium text-slate-400 hover:text-white transition-colors duration-200">
+                <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                </svg>
                 <span class="hidden sm:inline">TikTok</span>
             </a>
 
-            <a href="https://www.linkedin.com/in/karl-joshua-siscar-a569a63b5/" target="_blank" rel="noopener noreferrer" class="flex items-center text-sm font-semibold text-slate-300 hover:text-white transition duration-300">
-                <svg class="w-5 h-5 mr-1.5 text-blue-500" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            <a href="https://www.linkedin.com/in/karl-joshua-siscar-a569a63b5/" target="_blank" rel="noopener noreferrer"
+               class="nav-link flex items-center gap-1.5 text-sm font-medium text-slate-400 hover:text-white transition-colors duration-200">
+                <svg class="w-4 h-4 text-blue-500 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                </svg>
                 <span class="hidden sm:inline">LinkedIn</span>
             </a>
 
-            <a href="mailto:iamavorythegreat@gmail.com" class="text-sm font-semibold border border-blue-500 text-blue-400 px-6 py-2 rounded-full hover:bg-blue-500 hover:text-white transition duration-300 hidden md:inline-block">
+            <a href="mailto:iamavorythegreat@gmail.com"
+               class="hidden md:inline-block text-sm font-semibold border border-blue-500/60 text-blue-400 px-5 py-2 rounded-full hover:bg-blue-500 hover:text-white hover:border-blue-500 transition-all duration-250">
                 Let's Talk
             </a>
         </div>
     </nav>
 
-    <header class="max-w-4xl mx-auto px-6 py-20 md:py-24 text-center">
-        <p class="text-blue-500 font-bold tracking-widest uppercase mb-4">Hello, I'm Karl</p>
-        <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-            Driving <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Digital Growth</span>
+    <!-- ────────────────── HERO ────────────────── -->
+    <header class="relative z-10 max-w-4xl mx-auto px-6 pt-16 pb-24 md:pt-20 md:pb-28 text-center">
+
+        <!-- Eyebrow -->
+        <div class="reveal inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-7">
+            <span class="pulse-dot w-1.5 h-1.5 rounded-full bg-blue-400 inline-block"></span>
+            Available for Work · Based in UAE
+        </div>
+
+        <h1 class="reveal reveal-delay-1 hero-headline text-5xl md:text-7xl font-bold text-white mb-5 leading-tight tracking-tight">
+            Driving <span class="gradient-text">Digital Growth</span>
         </h1>
-        <h2 class="text-xl md:text-2xl text-slate-400 font-medium mb-8">Social Media Strategist & Community Manager</h2>
-        <p class="text-lg text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
-            I spent the last few years mastering the digital attention economy, growing a highly engaged community of over <strong class="text-white">140,000 subscribers</strong>. Now, I leverage my deep understanding of audience retention and algorithm optimization.
+
+        <h2 class="reveal reveal-delay-2 text-lg md:text-xl text-slate-400 font-medium mb-6">
+            Social Media Strategist & Community Manager
+        </h2>
+
+        <p class="reveal reveal-delay-3 text-base md:text-lg text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+            I spent the last few years mastering the digital attention economy, growing a highly engaged community of over
+            <strong class="text-white font-semibold">140,000 subscribers</strong>.
+            Now I leverage that deep understanding of audience retention and algorithm optimization for brands.
         </p>
-        
-        <div class="flex flex-col md:flex-row items-center justify-center gap-4">
-            <a href="mailto:iamavorythegreat@gmail.com" class="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-500 transition duration-300 shadow-[0_0_15px_rgba(37,99,235,0.5)]">
-                Email Me
-            </a>
-            <a href="Resume.pdf" target="_blank" class="border border-slate-600 text-slate-300 px-8 py-3 rounded-full font-semibold hover:bg-slate-800 hover:text-white transition duration-300">
-                Download Resume
-            </a>
+
+        <div class="reveal reveal-delay-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a href="mailto:iamavorythegreat@gmail.com" class="btn-primary">Email Me</a>
+            <a href="Resume.pdf" target="_blank" class="btn-secondary">Download Resume</a>
         </div>
     </header>
 
-    <div class="max-w-6xl mx-auto px-6 pb-16">
-        <p class="text-center text-sm font-semibold text-slate-500 uppercase tracking-widest mb-6">Technical Toolkit</p>
-        <div class="flex flex-wrap justify-center gap-3 md:gap-6">
-            <span class="bg-slate-800/50 border border-slate-700 text-slate-300 px-4 py-2 rounded-lg text-sm">Meta Business Suite</span>
-            <span class="bg-slate-800/50 border border-slate-700 text-slate-300 px-4 py-2 rounded-lg text-sm">YouTube Analytics</span>
-            <span class="bg-slate-800/50 border border-slate-700 text-slate-300 px-4 py-2 rounded-lg text-sm">OBS Studio</span>
-            <span class="bg-slate-800/50 border border-slate-700 text-slate-300 px-4 py-2 rounded-lg text-sm">CapCut / Premiere Pro</span>
-            <span class="bg-slate-800/50 border border-slate-700 text-slate-300 px-4 py-2 rounded-lg text-sm">Canva</span>
-            <span class="bg-slate-800/50 border border-slate-700 text-slate-300 px-4 py-2 rounded-lg text-sm">Community Moderation</span>
+    <!-- ────────────────── TOOLKIT ────────────────── -->
+    <div class="relative z-10 max-w-5xl mx-auto px-6 pb-20 reveal">
+        <p class="text-center text-xs font-bold text-slate-500 uppercase tracking-widest mb-5">Technical Toolkit</p>
+        <div class="flex flex-wrap justify-center gap-2.5">
+            <span class="toolkit-pill px-4 py-2 rounded-lg text-sm">Meta Business Suite</span>
+            <span class="toolkit-pill px-4 py-2 rounded-lg text-sm">YouTube Analytics</span>
+            <span class="toolkit-pill px-4 py-2 rounded-lg text-sm">OBS Studio</span>
+            <span class="toolkit-pill px-4 py-2 rounded-lg text-sm">CapCut / Premiere Pro</span>
+            <span class="toolkit-pill px-4 py-2 rounded-lg text-sm">Canva</span>
+            <span class="toolkit-pill px-4 py-2 rounded-lg text-sm">Community Moderation</span>
         </div>
     </div>
 
-    <section class="max-w-6xl mx-auto px-6 py-16">
-        <div class="text-sm font-bold text-blue-500 tracking-widest uppercase mb-2">01 / Organic Growth</div>
-        <h3 class="text-3xl font-bold text-white mb-8">Building a 140k+ Digital Community</h3>
-        
-        <div class="glass-card rounded-2xl p-8 md:p-12 grid md:grid-cols-2 gap-12 items-center">
+    <!-- ────────────────── 01 · ORGANIC GROWTH ────────────────── -->
+    <section class="relative z-10 max-w-6xl mx-auto px-6 py-16">
+
+        <div class="reveal">
+            <div class="section-badge">01 / Organic Growth</div>
+            <h3 class="text-3xl md:text-4xl font-bold text-white">Building a 140k+ Digital Community</h3>
+            <div class="section-divider"></div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-8 md:p-12 grid md:grid-cols-2 gap-12 items-center reveal reveal-delay-1">
+
+            <!-- Left: Strategy -->
             <div>
-                <h4 class="font-semibold text-lg text-white mb-3">The Strategy</h4>
-                <ul class="list-disc list-inside text-slate-300 mb-8 space-y-3 font-light">
-                    <li><strong class="text-white">Niche Dominance:</strong> Achieved Top 1 Global player ranking to establish instant credibility.</li>
-                    <li><strong class="text-white">Live Engagement:</strong> Hosted high-retention live broadcasts with real-time community management.</li>
-                    <li><strong class="text-white">Algorithm Optimization:</strong> Analyzed CTR and viewer retention data to continuously refine content packaging.</li>
-                </ul>
-
-                <div class="flex flex-wrap gap-4">
-                    <div class="bg-blue-500/10 border border-blue-500/20 text-blue-400 px-5 py-3 rounded-lg font-bold text-lg">140,000+ Subs</div>
-                    <div class="bg-blue-500/10 border border-blue-500/20 text-blue-400 px-5 py-3 rounded-lg font-bold text-lg">Top Global Rank</div>
-                </div>
-            </div>
-
-            <div class="bg-slate-800 rounded-xl border border-slate-700 shadow-2xl p-6 flex flex-col justify-between w-full aspect-video relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-transparent"></div>
-                
-                <div class="relative z-10 flex justify-between items-center mb-4">
-                    <h5 class="text-slate-300 font-semibold tracking-wide flex items-center gap-2">
-                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                        Channel Overview
-                    </h5>
-                    <span class="flex items-center text-green-400 text-xs font-bold bg-green-400/10 px-2 py-1 rounded-full border border-green-400/20">
-                        <span class="w-2 h-2 rounded-full bg-green-400 mr-1.5 animate-pulse"></span> Active
-                    </span>
-                </div>
-                
-                <div class="relative z-10 grid grid-cols-2 gap-4 h-full">
-                    <div class="bg-slate-900/70 rounded-lg p-4 flex flex-col justify-center border border-slate-700/50">
-                        <span class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Total Audience</span>
-                        <span class="text-3xl md:text-4xl font-bold text-white">140K<span class="text-blue-500">+</span></span>
+                <h4 class="font-semibold text-white mb-5 text-lg">The Strategy</h4>
+                <div class="space-y-5">
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-white text-sm mb-0.5">Niche Dominance</p>
+                            <p class="text-slate-400 text-sm font-light">Achieved Top 1 Global player ranking to establish instant credibility and authority within the niche.</p>
+                        </div>
                     </div>
-                    <div class="bg-slate-900/70 rounded-lg p-4 flex flex-col justify-center border border-slate-700/50">
-                        <span class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Peak Global Rank</span>
-                        <span class="text-3xl md:text-4xl font-bold text-white">#1</span>
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-white text-sm mb-0.5">Live Engagement</p>
+                            <p class="text-slate-400 text-sm font-light">Hosted high-retention live broadcasts with real-time community management and interactive formats.</p>
+                        </div>
                     </div>
-                    <div class="bg-slate-900/70 col-span-2 rounded-lg p-4 flex flex-col justify-center border border-slate-700/50">
-                        <span class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-2">Primary Growth Drivers</span>
-                        <div class="flex gap-2 flex-wrap">
-                            <span class="bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-3 py-1.5 rounded-full">High-CTR Thumbnails</span>
-                            <span class="bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-3 py-1.5 rounded-full">Retention Optimization</span>
-                            <span class="bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-3 py-1.5 rounded-full">Live Engagement</span>
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-white text-sm mb-0.5">Algorithm Optimization</p>
+                            <p class="text-slate-400 text-sm font-light">Analysed CTR and viewer retention data to continuously refine content packaging and publishing cadence.</p>
                         </div>
                     </div>
                 </div>
+
+                <div class="flex flex-wrap gap-3 mt-8">
+                    <div class="stat-card bg-blue-500/10 border border-blue-500/20 text-blue-400 px-5 py-3 rounded-xl font-bold text-lg">140,000+ Subs</div>
+                    <div class="stat-card bg-blue-500/10 border border-blue-500/20 text-blue-400 px-5 py-3 rounded-xl font-bold text-lg">Top Global Rank</div>
+                </div>
+            </div>
+
+            <!-- Right: Analytics mockup -->
+            <div class="bg-slate-900/70 rounded-2xl border border-slate-700/60 p-6 relative overflow-hidden shadow-2xl">
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-900/15 to-transparent pointer-events-none"></div>
+
+                <!-- Header row -->
+                <div class="relative flex justify-between items-center mb-6">
+                    <div>
+                        <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Channel Overview</p>
+                        <p class="text-white font-bold text-lg mt-0.5">@avorygaming</p>
+                    </div>
+                    <span class="flex items-center text-green-400 text-xs font-bold bg-green-400/10 px-3 py-1.5 rounded-full border border-green-400/20">
+                        <span class="pulse-dot w-1.5 h-1.5 rounded-full bg-green-400 mr-1.5 inline-block"></span> Live
+                    </span>
+                </div>
+
+                <!-- Stats row -->
+                <div class="relative grid grid-cols-2 gap-3 mb-5">
+                    <div class="bg-slate-800/60 rounded-xl p-4 border border-slate-700/40">
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Total Audience</p>
+                        <p class="text-white text-3xl font-bold">140K<span class="text-blue-400">+</span></p>
+                    </div>
+                    <div class="bg-slate-800/60 rounded-xl p-4 border border-slate-700/40">
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Peak Rank</p>
+                        <p class="text-white text-3xl font-bold">#<span class="text-blue-400">1</span></p>
+                    </div>
+                </div>
+
+                <!-- Mini bar chart -->
+                <div class="relative bg-slate-800/60 rounded-xl p-4 border border-slate-700/40">
+                    <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-4">Subscriber Growth (YoY)</p>
+                    <div class="flex items-end justify-between gap-2 h-20">
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <div class="bar bar-1 w-full bg-blue-500/30 rounded-t" style="height:35%"></div>
+                            <span class="text-slate-600 text-xs">Y1</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <div class="bar bar-2 w-full bg-blue-500/45 rounded-t" style="height:52%"></div>
+                            <span class="text-slate-600 text-xs">Y2</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <div class="bar bar-3 w-full bg-blue-500/60 rounded-t" style="height:70%"></div>
+                            <span class="text-slate-600 text-xs">Y3</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <div class="bar bar-4 w-full bg-blue-500/80 rounded-t" style="height:88%"></div>
+                            <span class="text-slate-600 text-xs">Y4</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <div class="bar bar-5 w-full bg-blue-400 rounded-t" style="height:100%"></div>
+                            <span class="text-blue-400 text-xs font-bold">Now</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tags -->
+                <div class="relative mt-4 flex gap-2 flex-wrap">
+                    <span class="bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-3 py-1 rounded-full">High-CTR Thumbnails</span>
+                    <span class="bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-3 py-1 rounded-full">Retention Optimised</span>
+                    <span class="bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-3 py-1 rounded-full">Live Engagement</span>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="max-w-6xl mx-auto px-6 py-16">
-        <div class="text-sm font-bold text-blue-500 tracking-widest uppercase mb-2">02 / Short-Form Video</div>
-        <h3 class="text-3xl font-bold text-white mb-4">Mastering the FYP (TikTok & Reels)</h3>
-        <p class="text-slate-300 font-light mb-10 max-w-3xl">Attention spans are shrinking. I specialize in pattern-interrupting hooks, trending audio adaptation, and high-retention vertical editing to turn casual scrollers into engaged followers.</p>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            <div class="glass-card rounded-2xl p-4 flex flex-col">
-                <div class="bg-slate-900 w-full aspect-[9/16] rounded-xl border border-slate-700 shadow-lg overflow-hidden relative">
-                    <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.tiktok.com/embed/v2/7585809371309837588" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-                <p class="text-slate-400 text-sm mt-4 text-center font-medium">Viral Hook Strategy</p>
-            </div>
+    <!-- ────────────────── 02 · SHORT-FORM ────────────────── -->
+    <section class="relative z-10 max-w-6xl mx-auto px-6 py-16">
 
-            <div class="glass-card rounded-2xl p-4 flex flex-col">
-                <div class="bg-slate-900 w-full aspect-[9/16] rounded-xl border border-slate-700 shadow-lg overflow-hidden relative">
-                    <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.tiktok.com/embed/v2/7307051703566617857" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-                <p class="text-slate-400 text-sm mt-4 text-center font-medium">Trend Adaptation</p>
-            </div>
+        <div class="reveal">
+            <div class="section-badge">02 / Short-Form Video</div>
+            <h3 class="text-3xl md:text-4xl font-bold text-white">Mastering the FYP</h3>
+            <div class="section-divider"></div>
+            <p class="text-slate-400 font-light max-w-2xl mb-10">
+                Attention spans are shrinking. I specialise in pattern-interrupting hooks, trending audio adaptation,
+                and high-retention vertical editing to turn casual scrollers into engaged followers.
+            </p>
+        </div>
 
-            <div class="glass-card rounded-2xl p-4 flex flex-col">
-                <div class="bg-slate-900 w-full aspect-[9/16] rounded-xl border border-slate-700 shadow-lg overflow-hidden relative">
-                    <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.tiktok.com/embed/v2/7322762638616694017" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <!-- Key pillars -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10 reveal reveal-delay-1">
+            <div class="glass-card rounded-xl p-5 flex gap-3 items-start">
+                <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mt-0.5">
+                    <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.069A1 1 0 0121 8.87V15.13a1 1 0 01-1.447.9L15 14M3 8h12v8H3z"/></svg>
                 </div>
-                <p class="text-slate-400 text-sm mt-4 text-center font-medium">High-Retention Editing</p>
+                <div>
+                    <p class="text-white font-semibold text-sm">Hook Engineering</p>
+                    <p class="text-slate-400 text-xs font-light mt-1">First 3-second patterns that stop the scroll cold.</p>
+                </div>
             </div>
+            <div class="glass-card rounded-xl p-5 flex gap-3 items-start">
+                <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mt-0.5">
+                    <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+                </div>
+                <div>
+                    <p class="text-white font-semibold text-sm">Trend Adaptation</p>
+                    <p class="text-slate-400 text-xs font-light mt-1">Riding audio trends before they peak for maximum reach.</p>
+                </div>
+            </div>
+            <div class="glass-card rounded-xl p-5 flex gap-3 items-start">
+                <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mt-0.5">
+                    <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <div>
+                    <p class="text-white font-semibold text-sm">Retention Editing</p>
+                    <p class="text-slate-400 text-xs font-light mt-1">Tight cuts, captions, and pacing that keep watch-time high.</p>
+                </div>
+            </div>
+        </div>
 
+        <!-- Embeds -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal reveal-delay-2">
+            <div class="tiktok-frame">
+                <div class="glass-card p-4 pb-0">
+                    <div class="bg-slate-900 w-full aspect-[9/16] rounded-xl overflow-hidden relative">
+                        <iframe class="absolute inset-0 w-full h-full" src="https://www.tiktok.com/embed/v2/7585809371309837588" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-3 pb-4 text-center font-medium">Viral Hook Strategy</p>
+                </div>
+            </div>
+            <div class="tiktok-frame">
+                <div class="glass-card p-4 pb-0">
+                    <div class="bg-slate-900 w-full aspect-[9/16] rounded-xl overflow-hidden relative">
+                        <iframe class="absolute inset-0 w-full h-full" src="https://www.tiktok.com/embed/v2/7307051703566617857" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-3 pb-4 text-center font-medium">Trend Adaptation</p>
+                </div>
+            </div>
+            <div class="tiktok-frame">
+                <div class="glass-card p-4 pb-0">
+                    <div class="bg-slate-900 w-full aspect-[9/16] rounded-xl overflow-hidden relative">
+                        <iframe class="absolute inset-0 w-full h-full" src="https://www.tiktok.com/embed/v2/7322762638616694017" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-3 pb-4 text-center font-medium">High-Retention Editing</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section class="max-w-6xl mx-auto px-6 py-16">
-        <div class="text-sm font-bold text-blue-500 tracking-widest uppercase mb-2">03 / Monetization</div>
-        <h3 class="text-3xl font-bold text-white mb-8">B2B Brand Partnerships</h3>
-        
-        <div class="glass-card rounded-2xl p-8 md:p-12">
-            <p class="text-slate-300 font-light mb-10 max-w-3xl">Successfully negotiated and executed influencer marketing campaigns to drive direct user acquisition and high-converting ROI for international tech platforms.</p>
-            
+    <!-- ────────────────── 03 · BRAND PARTNERSHIPS ────────────────── -->
+    <section class="relative z-10 max-w-6xl mx-auto px-6 py-16">
+
+        <div class="reveal">
+            <div class="section-badge">03 / Monetization</div>
+            <h3 class="text-3xl md:text-4xl font-bold text-white">B2B Brand Partnerships</h3>
+            <div class="section-divider"></div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-8 md:p-12 reveal reveal-delay-1">
+            <p class="text-slate-300 font-light mb-10 max-w-3xl">
+                Successfully negotiated and executed influencer marketing campaigns to drive direct user acquisition
+                and high-converting ROI for international tech platforms.
+            </p>
+
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                
-                <div class="bg-slate-800/50 brand-glow border border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center transition duration-300">
-                    <img src="aptoide.png" alt="Aptoide" class="h-12 w-auto object-contain mb-3 drop-shadow-md">
-                    <span class="text-lg font-bold text-slate-200">Aptoide</span>
+                <div class="brand-card bg-slate-800/50 border border-slate-700/60 rounded-2xl p-6 flex flex-col items-center justify-center gap-3">
+                    <img src="aptoide.png" alt="Aptoide" class="h-12 w-auto object-contain drop-shadow-md">
+                    <span class="text-slate-200 font-bold text-sm">Aptoide</span>
                 </div>
-
-                <div class="bg-slate-800/50 brand-glow border border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center transition duration-300">
-                    <img src="cocodp.png" alt="CocoDp" class="h-12 w-auto object-contain mb-3 drop-shadow-md">
-                    <span class="text-lg font-bold text-slate-200">CocoDp</span>
+                <div class="brand-card bg-slate-800/50 border border-slate-700/60 rounded-2xl p-6 flex flex-col items-center justify-center gap-3">
+                    <img src="cocodp.png" alt="CocoDp" class="h-12 w-auto object-contain drop-shadow-md">
+                    <span class="text-slate-200 font-bold text-sm">CocoDp</span>
                 </div>
-
-                <div class="bg-slate-800/50 brand-glow border border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center transition duration-300">
-                    <img src="eneba.png" alt="Eneba" class="h-12 w-auto object-contain mb-3 drop-shadow-md">
-                    <span class="text-lg font-bold text-slate-200">Eneba</span>
+                <div class="brand-card bg-slate-800/50 border border-slate-700/60 rounded-2xl p-6 flex flex-col items-center justify-center gap-3">
+                    <img src="eneba.png" alt="Eneba" class="h-12 w-auto object-contain drop-shadow-md">
+                    <span class="text-slate-200 font-bold text-sm">Eneba</span>
                 </div>
-
-                <div class="bg-slate-800/50 brand-glow border border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center transition duration-300">
-                    <img src="topuplive.png" alt="Topuplive" class="h-12 w-auto object-contain mb-3 drop-shadow-md">
-                    <span class="text-lg font-bold text-slate-200">Topuplive</span>
+                <div class="brand-card bg-slate-800/50 border border-slate-700/60 rounded-2xl p-6 flex flex-col items-center justify-center gap-3">
+                    <img src="topuplive.png" alt="Topuplive" class="h-12 w-auto object-contain drop-shadow-md">
+                    <span class="text-slate-200 font-bold text-sm">Topuplive</span>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <section class="max-w-6xl mx-auto px-6 py-16 mb-20">
-        <div class="text-sm font-bold text-blue-500 tracking-widest uppercase mb-2">04 / Corporate Strategy</div>
-        <h3 class="text-3xl font-bold text-white mb-8">Azure Sands Real Estate (Mock Campaign)</h3>
-        
-        <div class="grid md:grid-cols-3 gap-6">
-            <div class="glass-card rounded-2xl p-8">
-                <h4 class="font-bold text-xl text-white mb-1">TikTok / IG Reels</h4>
-                <p class="text-blue-400 text-sm mb-4">Top-of-Funnel Awareness</p>
-                <p class="text-slate-300 font-light text-sm">Targeted lifestyle video showcasing beachfront luxury. Fast-paced POV cuts to capture attention and sell the "weekend escape" feeling rather than just a property.</p>
+    <!-- ────────────────── 04 · CORPORATE STRATEGY ────────────────── -->
+    <section class="relative z-10 max-w-6xl mx-auto px-6 py-16 mb-20">
+
+        <div class="reveal">
+            <div class="section-badge">04 / Corporate Strategy</div>
+            <h3 class="text-3xl md:text-4xl font-bold text-white">Azure Sands Real Estate</h3>
+            <div class="section-divider"></div>
+            <p class="text-slate-400 font-light max-w-2xl mb-10">
+                Mock multi-platform campaign designed for a luxury real estate brand in Ras Al-Khaimah — demonstrating full-funnel social strategy across three distinct audience segments.
+            </p>
+        </div>
+
+        <!-- Funnel label -->
+        <div class="flex items-center gap-3 mb-6 reveal">
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-widest">Campaign Funnel</div>
+            <div class="flex-1 h-px bg-slate-700/50"></div>
+            <div class="flex gap-2 text-xs">
+                <span class="bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Awareness</span>
+                <span class="bg-blue-500/10 border border-blue-500/30 text-blue-400 px-2.5 py-1 rounded-full">Consideration</span>
+                <span class="bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Conversion</span>
             </div>
-            <div class="glass-card rounded-2xl p-8 border-t-4 border-blue-500 relative transform md:-translate-y-4">
-                <h4 class="font-bold text-xl text-white mb-1">LinkedIn Strategy</h4>
-                <p class="text-blue-400 text-sm mb-4">Investor & B2B Lead Gen</p>
-                <p class="text-slate-300 font-light text-sm">Data-driven posts focusing on Ras Al-Khaimah's booming infrastructure, tax-free rental yields, and high capital appreciation to capture high-net-worth professionals.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-5 items-start reveal reveal-delay-1">
+
+            <!-- Awareness -->
+            <div class="glass-card rounded-2xl p-7">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="w-2 h-2 rounded-full bg-slate-500 inline-block"></span>
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Awareness</span>
+                </div>
+                <h4 class="font-bold text-lg text-white mb-1">TikTok / IG Reels</h4>
+                <p class="text-blue-400 text-xs font-semibold mb-4 uppercase tracking-wide">Top-of-Funnel</p>
+                <p class="text-slate-300 text-sm font-light leading-relaxed">Targeted lifestyle video showcasing beachfront luxury. Fast-paced POV cuts to capture attention and sell the "weekend escape" feeling rather than just a property.</p>
             </div>
-            <div class="glass-card rounded-2xl p-8">
-                <h4 class="font-bold text-xl text-white mb-1">Meta Ads (Facebook/IG)</h4>
-                <p class="text-blue-400 text-sm mb-4">Direct Conversion</p>
-                <p class="text-slate-300 font-light text-sm">Carousel ad highlighting the 60/40 payment plan and creating urgency ("Only 4 units remaining") with a direct Call-To-Action to download the property brochure.</p>
+
+            <!-- Consideration — featured -->
+            <div class="glass-card rounded-2xl p-7 strategy-card-featured">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="w-2 h-2 rounded-full bg-blue-500 inline-block pulse-dot"></span>
+                    <span class="text-xs font-bold text-blue-400 uppercase tracking-wider">Consideration</span>
+                </div>
+                <h4 class="font-bold text-lg text-white mb-1">LinkedIn Strategy</h4>
+                <p class="text-blue-400 text-xs font-semibold mb-4 uppercase tracking-wide">Investor & B2B Lead Gen</p>
+                <p class="text-slate-300 text-sm font-light leading-relaxed">Data-driven posts focusing on Ras Al-Khaimah's booming infrastructure, tax-free rental yields, and high capital appreciation to capture high-net-worth professionals.</p>
+            </div>
+
+            <!-- Conversion -->
+            <div class="glass-card rounded-2xl p-7">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="w-2 h-2 rounded-full bg-slate-500 inline-block"></span>
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Conversion</span>
+                </div>
+                <h4 class="font-bold text-lg text-white mb-1">Meta Ads</h4>
+                <p class="text-blue-400 text-xs font-semibold mb-4 uppercase tracking-wide">Direct Conversion</p>
+                <p class="text-slate-300 text-sm font-light leading-relaxed">Carousel ad highlighting the 60/40 payment plan and creating urgency ("Only 4 units remaining") with a direct CTA to download the property brochure.</p>
             </div>
         </div>
     </section>
 
-    <footer class="border-t border-slate-800 py-10 text-center">
-        <p class="text-slate-500 font-light text-sm mb-4">© 2026 Karl Joshua Siscar. Based in Ras Al-Khaimah, UAE.</p>
-        <a href="https://www.linkedin.com/in/karl-joshua-siscar-a569a63b5/" target="_blank" class="text-blue-500 hover:text-white transition duration-300 text-sm font-semibold">Connect on LinkedIn</a>
+    <!-- ────────────────── CTA STRIP ────────────────── -->
+    <section class="relative z-10 max-w-6xl mx-auto px-6 pb-28">
+        <div class="glass-card rounded-2xl p-10 md:p-14 text-center reveal" style="background: linear-gradient(135deg, rgba(37,99,235,0.12) 0%, rgba(30,41,59,0.5) 100%);">
+            <p class="text-blue-400 text-xs font-bold uppercase tracking-widest mb-3">Ready to grow together?</p>
+            <h3 class="text-3xl md:text-4xl font-bold text-white mb-4">Let's Build Something.</h3>
+            <p class="text-slate-400 font-light max-w-xl mx-auto mb-8">Whether you need a content strategy, community manager, or a brand partnership — I'm open to new opportunities.</p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <a href="mailto:iamavorythegreat@gmail.com" class="btn-primary">Email Me</a>
+                <a href="https://www.linkedin.com/in/karl-joshua-siscar-a569a63b5/" target="_blank" class="btn-secondary">Connect on LinkedIn</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ────────────────── FOOTER ────────────────── -->
+    <footer class="relative z-10 border-t border-slate-800/60 py-8 text-center">
+        <p class="text-slate-600 text-sm">© 2026 Karl Joshua Siscar · Ras Al-Khaimah, UAE</p>
     </footer>
+
+    <!-- ────────────────── SCRIPTS ────────────────── -->
+    <script>
+        // Intersection Observer for scroll reveals
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
 
 </body>
 </html>
