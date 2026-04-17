@@ -89,19 +89,6 @@
             background-clip: text;
         }
 
-        /* ── Stat counter card ── */
-        .stat-card {
-            position: relative;
-            overflow: hidden;
-        }
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, transparent 60%);
-            pointer-events: none;
-        }
-
         /* ── Brand card hover ── */
         .brand-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
@@ -315,7 +302,18 @@
 
         <div class="reveal">
             <div class="section-badge">01 / Organic Growth</div>
-            <h3 class="text-3xl md:text-4xl font-bold text-white">Building a 141k+ Digital Community</h3>
+            <h3 class="text-3xl md:text-4xl font-bold text-white mb-6">Building a Global Community</h3>
+            
+            <div class="inline-flex items-center gap-4 bg-slate-800/50 border border-slate-700/50 shadow-lg rounded-2xl p-4 pr-8 mb-8">
+                <div class="w-12 h-12 rounded-xl bg-slate-700/50 text-red-500 flex items-center justify-center">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                </div>
+                <div>
+                    <p class="text-white text-2xl font-bold"><span class="counter-value" data-target="141">0</span>K<span class="text-blue-400">+</span></p>
+                    <p class="text-slate-400 text-xs font-bold uppercase tracking-wider">YouTube Subscribers</p>
+                </div>
+            </div>
+
             <div class="section-divider"></div>
         </div>
 
@@ -351,11 +349,6 @@
                             <p class="text-slate-400 text-sm font-light">Analysed CTR and viewer retention data to continuously refine content packaging and publishing cadence.</p>
                         </div>
                     </div>
-                </div>
-
-                <div class="flex flex-wrap gap-3 mt-8">
-                    <div class="stat-card bg-blue-500/10 border border-blue-500/20 text-blue-400 px-5 py-3 rounded-xl font-bold text-lg">141,000+ Subs</div>
-                    <div class="stat-card bg-blue-500/10 border border-blue-500/20 text-blue-400 px-5 py-3 rounded-xl font-bold text-lg">Top Global Rank</div>
                 </div>
             </div>
 
