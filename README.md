@@ -1,29 +1,59 @@
-# Avory Portfolio — Fresh Start
+# Karl Joshua Siscar — Social Media Manager Portfolio
 
-Static HTML/CSS/JS portfolio designed for GitHub Pages. No npm, build tools, or framework required.
+Welcome to my professional portfolio! I'm Karl Joshua Siscar, a Social Media Manager, Content Strategist, and Community Manager based in the United Arab Emirates.
 
-## Preview locally
-Open this folder in VS Code. Install the **Live Server** extension, right-click `index.html`, and choose **Open with Live Server**.
+I specialize in creating engaging digital content, developing audience growth strategies, managing online communities, and executing brand collaborations.
 
-## Deploy to existing GitHub Pages repository
-1. **Back up first**: open `https://github.com/karlosavory/karlosavory.github.io`, select **Code → Download ZIP**.
-2. Create a **new local folder** and unzip this package into it. Confirm `index.html` is at the root, alongside `css`, `js`, and `assets`.
-3. Preview and check all links and images.
-4. On GitHub, replace old tracked website files with these new files, keeping the existing repository and its GitHub Pages settings. Easiest with GitHub Desktop: clone existing repo, remove old site files from the cloned folder (keep `.git`), copy in this project's files, review changes, commit and push.
-5. In GitHub **Settings → Pages**, verify **Deploy from a branch → main → /(root)**. Wait for deployment and refresh `https://karlosavory.github.io/`.
+### 🌐 Live Portfolio
 
-**Important:** Never delete the GitHub repository itself. That can interrupt your Pages site and destroy repository history. Do not delete the hidden `.git` directory inside a cloned repository.
+**[Visit My Portfolio](https://karlosavory.github.io/)**
 
-## Before applying for jobs
-- Confirm current channel totals and attach source screenshots for CTR/retention.
-- Review brand partnership descriptions and ensure permission to share.
-- Neon Ember is clearly a hypothetical concept. All mockup engagement figures are illustrative.
-- Confirm contact email in `index.html` and in your résumé.
-- Optional: compress large campaign images for faster mobile loading.
+### 🚀 Professional Highlights
 
-## Project structure
-- `index.html` — page content and semantic layout
-- `css/style.css` — responsive design
-- `js/main.js` — mobile menu and year
-- `assets/images/` — supplied logos and campaign visuals
-- `assets/documents/Resume.pdf` — supplied résumé
+- **140K+ YouTube Subscribers** — Built and managed a gaming-focused digital community through organic content strategies.
+- **27M+ YouTube Views** — Developed content strategies focused on audience engagement and retention.
+- **Brand Collaborations** — Worked with international brands including Aptoide, CocoDp, Eneba, and Topuplive.
+- **Content Strategy & Analytics** — Experienced in analyzing content performance, optimizing engagement, and managing digital communities.
+
+### 💼 Areas of Expertise
+
+- Social Media Management
+- Content Strategy & Planning
+- Community Management
+- Short-Form Video Production
+- Influencer Marketing & Brand Partnerships
+- Social Media Analytics & Reporting
+- Organic Audience Growth
+- Live Streaming & Audience Engagement
+
+### 🛠️ Tools & Platforms
+
+YouTube Studio · TikTok · Meta Business Suite · Canva · CapCut · Adobe Premiere Pro · OBS Studio · Buffer
+
+### 📂 Portfolio Projects
+
+**Avory Gaming — Organic Audience Growth**
+
+A real-world case study highlighting content strategy, audience development, community engagement, and performance optimization.
+
+**Brand Partnerships**
+
+A showcase of collaborations with international digital brands, featuring sponsored content and influencer marketing initiatives.
+
+**Neon Ember — Social Media Campaign Concept**
+
+A hypothetical food and beverage marketing campaign demonstrating creative strategy, influencer outreach, content planning, and localized digital advertising.
+
+*Neon Ember is a conceptual project created for portfolio demonstration purposes.*
+
+### 📬 Contact
+
+I'm open to Social Media Manager, Content Strategist, and Community Management opportunities.
+
+- **Email:** [karlsiscar@gmail.com](mailto:karlsiscar@gmail.com)
+- **LinkedIn:** [Karl Joshua Siscar](https://www.linkedin.com/in/karl-joshua-siscar-a569a63b5/)
+- **Portfolio:** [karlosavory.github.io](https://karlosavory.github.io/)
+
+---
+
+© 2026 Karl Joshua Siscar. All rights reserved.
